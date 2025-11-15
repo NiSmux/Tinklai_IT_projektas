@@ -36,8 +36,9 @@ class UserController extends Controller
         return redirect('/login')->with('success', 'Registracija sėkminga!');
     }
 
+
     public function showLoginForm(){
-        return view('Login');
+        return view('login');
     }
     public function login(Request $request){
         $credentials = $request->validate([
@@ -54,6 +55,7 @@ class UserController extends Controller
             'email' => 'Neteisingas el. paštas arba slaptažodis.',
         ])->onlyInput('email');
     }
+
 
     public function logout(Request $request)
     {
