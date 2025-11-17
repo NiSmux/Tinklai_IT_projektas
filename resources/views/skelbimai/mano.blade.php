@@ -5,6 +5,14 @@
 @section('content')
     <h2 class="mb-3">Mano skelbimai</h2>
 
+    {{-- Success message --}}
+    @if (session('success'))
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
+    @endif
+
+
     @if($skelbimai->count())
         <div class="row">
             @foreach($skelbimai as $s)

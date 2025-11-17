@@ -67,9 +67,9 @@ Route::middleware('auth')->group(function () {
 
 });
 
-Route::get('/mano-skelbimai', [SkelbimasController::class, 'myAds'])
+Route::get('/skelbimai/mano', [SkelbimasController::class, 'myAds'])
     ->middleware('auth')
-    ->name('mano.skelbimai');
+    ->name('skelbimai.mano');
 // ------------------------------
 // VIENO SKELBIMO PERŽIŪRA
 // ------------------------------

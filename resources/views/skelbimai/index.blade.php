@@ -42,8 +42,7 @@
                          class="card-img-top"
                          style="height: 200px; object-fit: cover;">
                 @else
-                    <div class="bg-secondary text-center text-white p-5"
-                         style="height: 200px;">
+                    <div class="bg-secondary text-center text-white p-5" style="height: 200px;">
                          Nuotraukos nėra
                     </div>
                 @endif

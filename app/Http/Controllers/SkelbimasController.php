@@ -53,7 +53,7 @@ class SkelbimasController extends Controller
             'nuotraukos.*'  => ['nullable','image','mimes:jpg,jpeg,png','max:20480'], // 20 MB per failą
         ]);
 
-        // 1. Sukuriam skelbimą
+        // Sukuriam skelbimą
         $skelbimas = Skelbimas::create([
             'vartotojas_id' => auth()->id(),
             'pavadinimas'   => $validated['pavadinimas'],
@@ -64,10 +64,10 @@ class SkelbimasController extends Controller
             'perziuros'     => 0,
         ]);
 
-        // 2. Sukuriame Intervention Image managerį
+        // Sukuriame Intervention Image managerį
         $manager = new ImageManager(new Driver());
 
-        // 3. Jei buvo įkeltos nuotraukos
+        // Jei buvo įkeltos nuotraukos
         if ($request->hasFile('nuotraukos')) {
 
             $files = $request->file('nuotraukos');
@@ -79,7 +79,7 @@ class SkelbimasController extends Controller
                 // perskaitom tikrą failo kelią
                 $img = $manager->read($file->getPathname());
 
-                // sumažinam iki max 1600px
+                // sumažinam dydi
                 $img->scaleDown(1600);
 
                 // watermark (jei turi public/watermark.png)
@@ -106,7 +106,7 @@ class SkelbimasController extends Controller
             }
         }
 
-        return redirect()->route('skelbimai.index')
+        return redirect()->route('skelbimai.mano')
             ->with('success', 'Skelbimas sukurtas!');
     }
 
@@ -140,7 +140,7 @@ class SkelbimasController extends Controller
         // jei yra naujų nuotraukų
         if ($request->hasFile('nuotraukos')) {
 
-            // kiek dar galima įkelti?
+            // kiek dar galima įkelti
             $remaining = 5 - $skelbimas->nuotraukos->count();
             $files = array_slice($request->file('nuotraukos'), 0, $remaining);
 

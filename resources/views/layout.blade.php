@@ -40,7 +40,7 @@
                 @auth
                     @if(auth()->user()->role === 'naudotojas')
                         <li class="nav-item">
-                            <a class="nav-link" href="/mano-skelbimai">Mano skelbimai</a>
+                            <a class="nav-link" href="/skelbimai/mano">Mano skelbimai</a>
                         </li>
 
                         @if(auth()->user()->gali_kurti == 1)
