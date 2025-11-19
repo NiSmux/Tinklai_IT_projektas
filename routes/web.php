@@ -89,6 +89,9 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::post('/admin/vartotojai/{id}/deny', [AdminController::class, 'deny'])
         ->name('admin.deny');
 
+    Route::post('/admin/vartotojai/{id}/role', [AdminController::class, 'changeRole'])
+        ->name('admin.changeRole');
+
 });
 
 // KONTROLIERIUS

@@ -14,6 +14,24 @@
         overflow-wrap: break-word;
         word-break: break-all;
     }
+    .pagination {
+        margin-top: 15px;
+    }
+
+    .pagination .page-item .page-link {
+        padding: 4px 10px;
+        font-size: 14px;
+    }
+
+    .pagination .page-item.active .page-link {
+        background-color: #0d6efd;
+        border-color: #0d6efd;
+        color: white;
+    }
+
+    .pagination .page-item.disabled .page-link {
+        color: #999;
+    }
 </style>
 </head>
 
