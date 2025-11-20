@@ -99,3 +99,7 @@ Route::middleware(['auth', 'kontrolierius'])->group(function () {
     Route::delete('/skelbimai/{id}/delete', [SkelbimasController::class, 'destroyByKontrolierius'])
         ->name('kontrolierius.delete');
 });
+Route::middleware(['auth', 'kontrolierius'])->group(function () {
+    Route::delete('/komentaras/{id}/delete', [KomentarasController::class, 'destroy'])
+        ->name('komentaras.delete');
+});

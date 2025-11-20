@@ -24,4 +24,12 @@ class KomentarasController extends Controller
 
         return back()->with('success', 'Žinutė išsiųsta.');
     }
+    public function destroy($id)
+    {
+        $komentaras = Komentaras::findOrFail($id);
+
+        $komentaras->delete();
+
+        return back()->with('success', 'Komentaras sėkmingai ištrintas.');
+    }
 }

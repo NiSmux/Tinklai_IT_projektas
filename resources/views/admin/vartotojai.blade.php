@@ -66,7 +66,6 @@
                         <th>Slapyvardis</th>
                         <th>Email</th>
                         <th>Rolė</th>
-                        <th>Keisti role</th>
                         <th>Gali kurti?</th>
                         <th>Keisti kūrimo leidimus</th>
                     </tr>
@@ -80,32 +79,35 @@
                             <td>{{ $user->el_pastas }}</td>
 
                             <td>
-                                <span class="badge 
-                                    @if($user->role === 'administratorius') bg-primary
-                                    @elseif($user->role === 'kontrolierius') bg-warning text-dark
-                                    @else bg-secondary @endif">
-                                    {{ ucfirst($user->role) }}
-                                </span>
-                            </td>
-
-                            <td>
-                                {{-- Negalima keisti savo paties rolės --}}
                                 @if ($user->id === auth()->id())
                                     <span class="text-muted">Savo rolės keisti negalima</span>
 
                                 @else
-
-                                    {{-- Rolės keitimas --}}
-                                    <form action="{{ route('admin.changeRole', $user->id) }}" method="post" class="d-inline">
+                                     <form action="{{ route('admin.changeRole', $user->id) }}" method="post" class="role-form">
                                         @csrf
+                                        <select name="role"
+                                                class="form-select form-select-sm role-select"
+                                                data-role="{{ $user->role }}"
+                                                onchange="this.dataset.role = this.value; this.form.submit();">
 
-                                        <select name="role" class="form-select form-select-sm d-inline-block w-auto">
-                                            <option value="naudotojas" {{ $user->role == 'naudotojas' ? 'selected' : '' }}>Naudotojas</option>
-                                            <option value="kontrolierius" {{ $user->role == 'kontrolierius' ? 'selected' : '' }}>Kontrolierius</option>
-                                            <option value="administratorius" {{ $user->role == 'administratorius' ? 'selected' : '' }}>Administratorius</option>
+                                            <option value="naudotojas" 
+                                                data-color="secondary"
+                                                {{ $user->role=='naudotojas' ? 'selected' : '' }}>
+                                                Naudotojas
+                                            </option>
+
+                                            <option value="kontrolierius"
+                                                data-color="warning"
+                                                {{ $user->role=='kontrolierius' ? 'selected' : '' }}>
+                                                Kontrolierius
+                                            </option>
+
+                                            <option value="administratorius"
+                                                data-color="primary"
+                                                {{ $user->role=='administratorius' ? 'selected' : '' }}>
+                                                Administratorius
+                                            </option>
                                         </select>
-
-                                        <button class="btn btn-sm btn-primary">Keisti</button>
                                     </form>
                                 @endif
                             </td>

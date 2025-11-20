@@ -89,5 +89,5 @@ class AdminController extends Controller
 
         return back()->with('success', 'Rolė sėkmingai pakeista.');
     }
-
+    
 }

@@ -32,6 +32,23 @@
     .pagination .page-item.disabled .page-link {
         color: #999;
     }
+    .role-select[data-role="administratorius"] {
+        border-radius: 10px;
+        background-color: #0d6efd !important;
+        color: white !important;
+    }
+
+    .role-select[data-role="kontrolierius"] {
+        border-radius: 10px;
+        background-color: #ffc107 !important;
+        color: #000 !important;
+    }
+
+    .role-select[data-role="naudotojas"] {
+        border-radius: 10px;
+        background-color: #6c757d !important;
+        color: white !important;
+    }
 </style>
 </head>
 

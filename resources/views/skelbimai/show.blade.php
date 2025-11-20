@@ -110,11 +110,23 @@
     <h3 class="mt-5">Komentarai</h3>
 
     @if ($skelbimas->komentarai->count())
-        @foreach ($skelbimas->komentarai as $kom)
-            <div class="p-2 mb-2 border rounded bg-white">
-                <strong>{{ $kom->vartotojas->slapyvardis }}</strong>
-                <span class="text-muted" style="font-size: 12px;">({{ $kom->data }})</span>
-                <p class="mb-0">{{ $kom->zinute }}</p>
+       @foreach ($skelbimas->komentarai as $komentaras)
+            <div class="card mb-2 p-2">
+                <strong>{{ $komentaras->vartotojas->slapyvardis }}</strong>
+                <p class="mb-1">{{ $komentaras->zinute }}</p>
+
+                {{-- Tik kontrolierius gali trinti --}}
+                @auth
+                    @if(auth()->user()->role === 'kontrolierius')
+                        <form action="{{ route('komentaras.delete', $komentaras->id) }}"
+                            method="post"
+                            onsubmit="return confirm('Ar tikrai ištrinti komentarą?')">
+                            @csrf
+                            @method('DELETE')
+                            <button class="btn btn-sm btn-danger">Ištrinti</button>
+                        </form>
+                    @endif
+                @endauth
             </div>
         @endforeach
     @else

@@ -11,11 +11,43 @@ use Intervention\Image\Drivers\Gd\Driver;
 class SkelbimasController extends Controller
 {
     // VISI skelbimai
-    public function index()
+    public function index(Request $request)
     {
-        $skelbimai = Skelbimas::orderBy('id', 'desc')->get();
+        $query = Skelbimas::query();
+
+        // --- FILTRAI ---
+
+        // Filtras pagal pavadinimą (paieška)
+        if ($request->filled('q')) {
+            $query->where('pavadinimas', 'LIKE', '%' . $request->q . '%');
+        }
+
+        // --- RŪŠIAVIMAS ---
+        if ($request->filled('sort')) {
+            switch ($request->sort) {
+                case 'kaina_asc':
+                    $query->orderBy('kaina', 'asc');
+                    break;
+                case 'kaina_desc':
+                    $query->orderBy('kaina', 'desc');
+                    break;
+                case 'naujausi':
+                    $query->orderBy('id', 'desc');
+                    break;
+                case 'seniausi':
+                    $query->orderBy('id', 'asc');
+                    break;
+            }
+        } else {
+            $query->orderBy('id', 'desc'); // default naujausi
+        }
+
+        // --- PUSLAPIAVIMAS ---
+        $skelbimai = $query->paginate(12)->withQueryString();
+
         return view('skelbimai.index', compact('skelbimai'));
     }
+
 
     // VIENAS skelbimas
     public function show($id)
