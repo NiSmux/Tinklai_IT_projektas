@@ -17,7 +17,12 @@ class Skelbimas extends Model
         'sukurimo_data',
         'redagavimo_data',
         'busena',
-        'kaina'
+        'kaina',
+        'galioja_iki',
+        'aktyvus'
+    ];
+    protected $casts = [
+        'galioja_iki' => 'date',
     ];
 
     public function vartotojas()
@@ -27,11 +32,17 @@ class Skelbimas extends Model
 
     public function nuotraukos()
     {
-        return $this->hasMany(SkelbimoNuotrauka::class, 'skelbimas_id')->orderBy('pozicija');
+        return $this->hasMany(SkelbimoNuotrauka::class, 'skelbimas_id')
+                    ->orderBy('pozicija');
     }
 
     public function komentarai()
     {
         return $this->hasMany(Komentaras::class, 'skelbimas_id');
+    }
+
+    public function isExpired(): bool
+    {
+        return $this->galioja_iki && now()->greaterThan($this->galioja_iki);
     }
 }

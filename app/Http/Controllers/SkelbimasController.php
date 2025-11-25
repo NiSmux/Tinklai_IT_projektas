@@ -48,11 +48,15 @@ class SkelbimasController extends Controller
         return view('skelbimai.index', compact('skelbimai'));
     }
 
-
     // VIENAS skelbimas
     public function show($id)
     {
         $skelbimas = Skelbimas::findOrFail($id);
+        if ($skelbimas->isExpired() && $skelbimas->aktyvus == 1) {
+            $skelbimas->update([
+                'aktyvus' => 0
+            ]);
+        }
 
         if (!Auth::check() || Auth::id() !== $skelbimas->vartotojas_id) {
             $skelbimas->increment('perziuros');
@@ -85,15 +89,17 @@ class SkelbimasController extends Controller
             'nuotraukos.*'  => ['nullable','image','mimes:jpg,jpeg,png','max:20480'], // 20 MB per failą
         ]);
 
-        // Sukuriam skelbimą
+        $days = intval($request->galiojimas);
+
         $skelbimas = Skelbimas::create([
             'vartotojas_id' => auth()->id(),
             'pavadinimas'   => $validated['pavadinimas'],
             'aprasymas'     => $validated['aprasymas'],
             'kaina'         => $validated['kaina'],
-            'sukurimo_data' => now()->toDateString(),
+            'sukurimo_data' => now(),
+            'galioja_iki'   => now()->addDays($days),
+            'aktyvus'       => 1,
             'busena'        => 'neparduotas',
-            'perziuros'     => 0,
         ]);
 
         // Sukuriame Intervention Image managerį
@@ -200,6 +206,11 @@ class SkelbimasController extends Controller
             }
         }
         $data['redagavimo_data'] = now()->toDateString();
+        
+        if ($request->filled('pratesti') && intval($request->pratesti) > 0) {
+            $days = intval($request->pratesti);
+            $skelbimas->galioja_iki = $skelbimas->galioja_iki->addDays($days);
+        }
 
         $skelbimas->update($data);
 
@@ -294,11 +305,36 @@ class SkelbimasController extends Controller
 
         return redirect('/skelbimai')->with('success', 'Skelbimas pašalintas.');
     }
-    public function myAds()
+    public function myAds(Request $request)
     {
-        $skelbimai = Skelbimas::where('vartotojas_id', auth()->id())
-            ->orderBy('id', 'desc')
-            ->get();
+        $query = Skelbimas::where('vartotojas_id', auth()->id());
+
+        // --- Filtras pagal pavadinimą ---
+        if ($request->filled('q')) {
+            $query->where('pavadinimas', 'LIKE', '%' . $request->q . '%');
+        }
+
+        // --- Rūšiavimas ---
+        if ($request->filled('sort')) {
+            switch ($request->sort) {
+                case 'kaina_asc':
+                    $query->orderBy('kaina', 'asc');
+                    break;
+                case 'kaina_desc':
+                    $query->orderBy('kaina', 'desc');
+                    break;
+                case 'seniausi':
+                    $query->orderBy('id', 'asc');
+                    break;
+                default:
+                    $query->orderBy('id', 'desc');
+            }
+        } else {
+            $query->orderBy('id', 'desc');
+        }
+
+        // --- Puslapiavimas ---
+        $skelbimai = $query->paginate(12)->withQueryString();
 
         return view('skelbimai.mano', compact('skelbimai'));
     }
@@ -353,5 +389,22 @@ class SkelbimasController extends Controller
         $next->save();
 
         return back();
+    }
+
+    public function expiredAds()
+    {
+        $today = now()->toDateString();
+
+        $skelbimai = Skelbimas::where('galioja_iki', '<', $today)
+                            ->orderBy('galioja_iki')
+                            ->get();
+
+        return view('kontrolierius.expired', compact('skelbimai'));
+    }
+    public function expired()
+    {
+        $skelbimai = Skelbimas::where('aktyvus', 0)->orderBy('galioja_iki', 'asc')->get();
+
+        return view('kontrolierius.expired', compact('skelbimai'));
     }
 }

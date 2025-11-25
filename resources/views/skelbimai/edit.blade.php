@@ -52,6 +52,14 @@
                     <option value="parduotas" {{ $skelbimas->busena == 'parduotas' ? 'selected' : '' }}>Parduotas</option>
                 </select>
             </div>
+            {{-- Galiojimo laikas --}}
+            <div class="mb-3">
+                <label class="form-label">Pratęsti galiojimą (dienomis)</label>
+                <input type="number" name="pratesti" class="form-control" min="0" value="0">
+                <small class="text-muted">
+                    Dabartinė galiojimo pabaiga: <strong>{{ $skelbimas->galioja_iki->format('Y-m-d') }}</strong>
+                </small>
+            </div>
 
             <button class="btn btn-primary">Atnaujinti</button>
         </form>

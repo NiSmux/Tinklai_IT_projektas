@@ -90,6 +90,11 @@
                             <a class="nav-link text-warning" href="/admin/vartotojai">Vartotojų sąrašas</a>
                         </li>
                     @endif
+                    @if(auth()->user()->role === 'kontrolierius')
+                        <li class="nav-item">
+                            <a class="nav-link text-warning" href="{{ route('kontrolierius.expired') }}">Pasibaigę skelbimai</a>
+                        </li>
+                    @endif
                 @endauth
             </ul>
 

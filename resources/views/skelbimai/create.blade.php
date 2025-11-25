@@ -40,6 +40,13 @@
                        value="{{ old('kaina') }}" required>
             </div>
 
+            <label>Galiojimas:</label>
+            <select name="galiojimas" class="form-select" required>
+                <option value="7">7 dienos</option>
+                <option value="14">14 dienų</option>
+                <option value="30">30 dienų</option>
+            </select>
+
             <div class="mb-3">
                 <label class="form-label">Nuotraukos (iki 5 vnt.)</label>
                 <input type="file" name="nuotraukos[]" class="form-control" accept="image/*" multiple>

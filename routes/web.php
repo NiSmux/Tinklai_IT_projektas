@@ -103,3 +103,19 @@ Route::middleware(['auth', 'kontrolierius'])->group(function () {
     Route::delete('/komentaras/{id}/delete', [KomentarasController::class, 'destroy'])
         ->name('komentaras.delete');
 });
+
+Route::middleware(['auth','kontrolierius'])->group(function () {
+    Route::get('/kontrolierius/baige-galiojima', [SkelbimasController::class, 'expiredAds'])
+        ->name('kontrolierius.expired');
+
+    Route::delete('/kontrolierius/baige-galiojima/{id}', [SkelbimasController::class, 'destroyByKontrolierius'])
+        ->name('kontrolierius.expired.delete');
+});
+
+Route::get('/kontrolierius/neaktyvus', [SkelbimasController::class, 'expired'])
+    ->middleware(['auth', 'kontrolierius'])
+    ->name('kontrolierius.expired');
+
+Route::post('/skelbimai/{id}/pratesti', [SkelbimasController::class, 'pratesti'])
+    ->middleware('auth')
+    ->name('skelbimai.pratesti');

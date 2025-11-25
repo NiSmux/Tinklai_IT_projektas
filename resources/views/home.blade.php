@@ -30,7 +30,7 @@
                                 <p class="card-text text-success fw-bold">{{ $skelbimas->kaina }} €</p>
 
                                 <p class="text-muted small mb-1">
-                                    Peržiūros: {{ $skelbimas->perziuros }}
+                                    Būsena: {{ $skelbimas->busena }}
                                 </p>
 
                                 <a href="/skelbimai/{{ $skelbimas->id }}" class="btn btn-outline-primary w-100">

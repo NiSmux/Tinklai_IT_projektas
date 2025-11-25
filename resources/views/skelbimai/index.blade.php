@@ -75,7 +75,10 @@
 
                 <div class="card-body">
                     <h5 class="card-title">{{ $skelbimas->pavadinimas }}</h5>
-                    <p class="card-text fw-bold">{{ $skelbimas->kaina }} €</p>
+                    <p class="card-text text-success fw-bold">{{ $skelbimas->kaina }} €</p>
+                    <p class="text-muted small mb-1">
+                        Būsena: {{ $skelbimas->busena }}
+                    </p>
                     <a href="/skelbimai/{{ $skelbimas->id }}" class="btn btn-primary">Peržiūrėti</a>
                 </div>
             </div>

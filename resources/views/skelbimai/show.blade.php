@@ -64,7 +64,15 @@
             </span>
         </p>
 
-        <p><strong>Peržiūros:</strong> {{ $skelbimas->perziuros }}</p>
+        @auth
+            @if(auth()->id() === $skelbimas->vartotojas_id || auth()->user()->role === 'kontrolierius')
+
+                <p><strong>Peržiūros:</strong> {{ $skelbimas->perziuros }}</p>
+
+                <p><strong>Galioja iki:</strong> {{ $skelbimas->galioja_iki->format('Y-m-d') }}</p>
+
+            @endif
+        @endauth
 
         <p><strong>Sukurta:</strong> {{ $skelbimas->sukurimo_data }}</p>
 
