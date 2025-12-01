@@ -87,6 +87,18 @@ class SkelbimasController extends Controller
             'aprasymas'     => ['required','string','min:1'],
             'kaina'         => ['required','integer','min:0'],
             'nuotraukos.*'  => ['nullable','image','mimes:jpg,jpeg,png','max:20480'], // 20 MB per failą
+        ],[
+            'nuotraukos.*.image' => 'Kiekvienas įkeltas failas turi būti nuotrauka (jpg, jpeg, png).',
+            'nuotraukos.*.mimes' => 'Kiekvienas įkeltas failas turi būti nuotrauka (jpg, jpeg, png).',
+            'nuotraukos.*.max'   => 'Kiekviena nuotrauka negali būti didesnė nei 20 MB.',
+            'pavadinimas.required' => 'Įveskite skelbimo pavadinimą.',
+            'pavadinimas.min' => 'Skelbimo pavadinimas turi būti bent 3 simbolių.',
+            'pavadinimas.max' => 'Skelbimo pavadinimas negali būti ilgesnis nei 255 simbolių.',
+            'aprasymas.required' => 'Įveskite skelbimo aprašymą.',
+            'aprasymas.min' => 'Skelbimo aprašymas turi būti bent 1 simbolio.',
+            'kaina.required' => 'Įveskite skelbimo kainą.',
+            'kaina.integer' => 'Kaina turi būti sveikas skaičius.',
+            'kaina.min' => 'Kaina negali būti neigiama.',
         ]);
 
         $days = intval($request->galiojimas);
@@ -174,6 +186,20 @@ class SkelbimasController extends Controller
             'aprasymas'   => ['required', 'min:1'],
             'kaina'       => ['required', 'integer', 'min:0'],
             'busena'      => ['required', 'in:parduotas,neparduotas'],
+            'pratesti'    => ['nullable', 'integer', 'min:0'],
+        ],[
+            'pavadinimas.required' => 'Įveskite skelbimo pavadinimą.',
+            'pavadinimas.min' => 'Skelbimo pavadinimas turi būti bent 3 simbolių.',
+            'pavadinimas.max' => 'Skelbimo pavadinimas negali būti ilgesnis nei 255 simbolių.',
+            'aprasymas.required' => 'Įveskite skelbimo aprašymą.',
+            'aprasymas.min' => 'Skelbimo aprašymas turi būti bent 1 simbolio.',
+            'kaina.required' => 'Įveskite skelbimo kainą.',
+            'kaina.integer' => 'Kaina turi būti sveikas skaičius.',
+            'kaina.min' => 'Kaina negali būti neigiama.',
+            'busena.required' => 'Pasirinkite skelbimo būseną.',
+            'busena.in' => 'Neteisinga skelbimo būsenos reikšmė.',
+            'pratesti.integer' => 'Pratęsimo dienų skaičius turi būti sveikas skaičius.',
+            'pratesti.min' => 'Pratęsimo dienų skaičius negali būti neigiamas.',
         ]);
         // jei yra naujų nuotraukų
         if ($request->hasFile('nuotraukos')) {
@@ -208,8 +234,11 @@ class SkelbimasController extends Controller
         $data['redagavimo_data'] = now()->toDateString();
         
         if ($request->filled('pratesti') && intval($request->pratesti) > 0) {
-            $days = intval($request->pratesti);
-            $skelbimas->galioja_iki = $skelbimas->galioja_iki->addDays($days);
+           $galiojaIki = \Carbon\Carbon::parse($skelbimas->galioja_iki);
+
+            $galiojaIki->addDays(intval($request->pratesti));
+
+            $skelbimas->galioja_iki = $galiojaIki->format('Y-m-d');
         }
 
         $skelbimas->update($data);

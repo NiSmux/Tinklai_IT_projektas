@@ -26,18 +26,18 @@
             <div class="mb-3">
                 <label class="form-label">Pavadinimas</label>
                 <input type="text" name="pavadinimas" class="form-control"
-                       value="{{ old('pavadinimas') }}" required>
+                       value="{{ old('pavadinimas') }}" >
             </div>
 
             <div class="mb-3">
                 <label class="form-label">Aprašymas</label>
-                <textarea name="aprasymas" class="form-control" rows="4" required>{{ old('aprasymas') }}</textarea>
+                <textarea name="aprasymas" class="form-control" rows="4">{{ old('aprasymas') }}</textarea>
             </div>
 
             <div class="mb-3">
                 <label class="form-label">Kaina (€)</label>
-                <input type="number" name="kaina" class="form-control" min="0"
-                       value="{{ old('kaina') }}" required>
+                <input type="number" name="kaina" class="form-control"
+                       value="{{ old('kaina') }}">
             </div>
 
             <label>Galiojimas:</label>

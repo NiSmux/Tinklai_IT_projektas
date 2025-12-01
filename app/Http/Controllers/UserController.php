@@ -20,6 +20,25 @@ class UserController extends Controller
             'tel' => ['required', 'regex:/^\+?[0-9]+$/', 'min:8', 'max:20'],
             'password' => ['required','min:6', 'max:200'],
             'confirm_password' => ['required','same:password']
+        ], [
+            'username.unique' => 'Toks slapyvardis jau egzistuoja.',
+            'username.required' => 'Įveskite slapyvardį.',
+            'username.min' => 'Slapyvardis turi būti bent 3 simbolių.',
+            'username.max' => 'Slapyvardis negali būti ilgesnis nei 100 simbolių.',
+            'email.unique' => 'Toks el. paštas jau egzistuoja.',
+            'slapyvardis.required' => 'Įveskite slapyvardį.',
+            'slapyvardis.min' => 'Slapyvardis turi būti bent 3 simbolių.',
+            'el_pastas.required' => 'Įveskite el. paštą.',
+            'el_pastas.email' => 'Neteisingas el. pašto formatas.',
+            'password.required' => 'Įveskite slaptažodį.',
+            'password.min' => 'Slaptažodis turi būti bent 6 simbolių.',
+            'password.max' => 'Slaptažodis negali būti ilgesnis nei 200 simbolių.',
+            'password.confirmed' => 'Slaptažodžiai nesutampa.',
+            'confirm_password.same' => 'Slaptažodžiai nesutampa.',
+            'tel.required' => 'Įveskite telefono numerį.',
+            'tel.regex' => 'Telefono numeris gali būti sudarytas tik iš skaičių ir pliuso ženklo.',
+            'tel.min' => 'Telefono numeris turi būti bent 8 simbolių.',
+            'tel.max' => 'Telefono numeris negali būti ilgesnis nei 20 simbolių.',
         ]);
 
         $hashedPassword = Hash::make($incomingFields['password']);
